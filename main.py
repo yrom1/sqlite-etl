@@ -8,7 +8,6 @@ def load_db() -> None:
 
 def save_db() -> None:
     run("sqlite3 data.db .dump > data.sql", shell=True)
-    run("rm data.db", shell=True)  # git cant diff .db files
 
 
 def create_schema() -> None:
