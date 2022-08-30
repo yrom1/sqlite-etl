@@ -14,7 +14,10 @@ jobs:
       - name: Install packages
         run: python -m pip install -r requirements.txt
       - name: Run main
-        run: python main.py > README.md
+        run: python main.py
+      - name: Dump database
+        run: sqlite3 data.db .dump > README.md
+        run: sqlite3 data.db .dump > data.sql
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
