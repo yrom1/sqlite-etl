@@ -1,21 +1,19 @@
 import sqlite3
 from subprocess import run
 
-DATABASE = "data.db"
+
+def load_db() -> None:
+    run("sqlite3 data.db < data.sql", shell=True)
 
 
-def print_db():
-    print(f"--- {DATABASE} ---")
-    run(f"cat {DATABASE}", shell=True)
+def save_db() -> None:
+    run("sqlite3 data.db .dump > data.sql", shell=True)
+    run("rm data.db", shell=True)  # git cant diff .db files
 
 
-def reset_db():
-    run(f"rm {DATABASE}", shell=True)
-    run(f"touch {DATABASE}", shell=True)
-
-
-def create_schema():
-    con = sqlite3.connect(f"{DATABASE}")
+def create_schema() -> None:
+    # NOTE this is not written to be idempotent if the schema already exists
+    con = sqlite3.connect(f"data.db")
     cur = con.cursor()
     # sqlite has no DATE, https://www.sqlite.org/datatype3.html
     cur.execute(
@@ -32,18 +30,17 @@ def create_schema():
     con.close()
 
 
-def insert_data():
-    con = sqlite3.connect(f"{DATABASE}")
+def insert_data(data: list[tuple[str, str, int]]) -> None:
+    con = sqlite3.connect(f"data.db")
     cur = con.cursor()
-    cur.execute("INSERT INTO data VALUES (CURRENT_DATE, 'banana', 42)")
+    cur.executemany("INSERT INTO data VALUES (?, ?, ?)", data)
     con.commit()
     con.close()
 
 
 if __name__ == "__main__":
-    reset_db()
-    print_db()
+    load_db()
     create_schema()
-    insert_data()
-    print_db()
-    print("🍰")
+    # insert_data(...) TODO
+    save_db()
+    print("Done 🍰!")
