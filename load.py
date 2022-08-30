@@ -1,8 +1,7 @@
 import pandas as pd
 
-df = pd.read_csv("archive.txt", sep=" ")
+df = pd.read_csv("archive.txt", sep=" ", thousands=",")
 df = df.reindex(columns=["date", "key", "value"])
-df.value = pd.to_numeric(df.value)
 df.to_csv("archive2.csv", index=False)
 
 with open("archive2.csv", "r") as f:
