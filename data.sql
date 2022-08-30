@@ -6,4 +6,5 @@ CREATE TABLE data (
         value INT,
         PRIMARY KEY (date, key)
     );
+INSERT INTO data VALUES('2022-08-30','banana',42);
 COMMIT;
