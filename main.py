@@ -40,7 +40,7 @@ def insert_data(data: list[tuple[str, str, int]]) -> None:
 
 if __name__ == "__main__":
     load_db()
-    create_schema()
+    # create_schema()
     # insert_data(...) TODO
     save_db()
     print("Done 🍰!")
