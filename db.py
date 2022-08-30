@@ -21,10 +21,25 @@ def create_schema() -> None:
     con.close()
 
 
-def insert_data(data: list[tuple[str, str, int]]) -> None:
+def load_data(data: list[tuple[str, str, int]]) -> None:
     con = sqlite3.connect(DATABASE)
     cur = con.cursor()
     cur.executemany("INSERT INTO data (date, key, value) VALUES (?, ?, ?)", data)
+    con.commit()
+    con.close()
+
+
+def insert_data(date: str, key: str, value: int) -> None:
+    con = sqlite3.connect(DATABASE)
+    cur = con.cursor()
+    cur.execute(
+        """
+    INSERT INTO data (date, key, value)
+    VALUES (:_date, :_key, :_value)
+    ON CONFLICT (date, key) DO UPDATE SET value = excluded.value
+    """,
+        {"_date": date, "_key": key, "_value": value},
+    )
     con.commit()
     con.close()
 

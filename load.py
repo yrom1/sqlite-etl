@@ -1,4 +1,5 @@
 import pandas as pd
+
 import db
 
 # --- EXTRACT TRANSFORM ---
@@ -14,4 +15,4 @@ import db
 
 # --- LOAD ---
 data = pd.read_csv("archive.csv").drop_duplicates(["date", "key"]).to_numpy().tolist()
-db.insert_data(data)
+db.load_data(data)
