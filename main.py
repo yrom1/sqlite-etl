@@ -28,11 +28,22 @@ def create_schema():
     );
     """
     )
+    con.commit()
+    con.close()
+
+
+def insert_data():
+    con = sqlite3.connect(f"{DATABASE}")
+    cur = con.cursor()
+    cur.execute("INSERT INTO data VALUES (CURRENT_DATE, 'banana', 42)")
+    con.commit()
+    con.close()
 
 
 if __name__ == "__main__":
     reset_db()
     print_db()
     create_schema()
+    insert_data()
     print_db()
     print("🍰")
